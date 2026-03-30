@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Adolescent Health — A Systems Thinking Guide</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f6f2;color:#1a1a1a;line-height:1.6}
+
+/* HEADER */
+.header{background:#0d2b2e;padding:28px 20px 24px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;right:-40px;top:-60px;width:220px;height:220px;border-radius:50%;background:#FA4616;opacity:.12}
+.header::after{content:'';position:absolute;right:80px;top:20px;width:160px;height:160px;border-radius:50%;background:#5B4DA0;opacity:.10}
+.header-badge{display:inline-block;background:#FA4616;color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:12px;letter-spacing:.06em;margin-bottom:10px;position:relative;z-index:1}
+.header-title{font-size:clamp(22px,5vw,32px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px;position:relative;z-index:1}
+.header-sub{font-size:13px;color:#c8e9ed;line-height:1.65;max-width:580px;position:relative;z-index:1}
+.pf-tag{display:inline-block;margin-top:12px;font-size:11px;color:#8aa4a8;position:relative;z-index:1}
+
+/* TABS */
+.tab-bar{background:#fff;border-bottom:1px solid rgba(0,0,0,.08);padding:0 16px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.tab-bar button{display:inline-block;padding:14px 16px;font-size:13px;font-weight:500;border:none;background:none;color:#666;cursor:pointer;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap}
+.tab-bar button.active{color:#FA4616;border-bottom-color:#FA4616;font-weight:600}
+.tab-bar button:hover{color:#FA4616}
+
+/* PANELS */
+.panel{display:none;padding:20px 16px 48px;max-width:900px;margin:0 auto}
+.panel.active{display:block}
+.panel-title{font-size:18px;font-weight:700;margin-bottom:6px;color:#1a1a1a}
+.panel-desc{font-size:13px;color:#555;margin-bottom:18px;line-height:1.65;max-width:680px}
+.section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#aaa;margin:22px 0 10px}
+
+/* CARDS GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid-2{grid-template-columns:1fr}}
+
+/* EXPANDABLE NODE */
+.node{background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:12px;margin-bottom:9px;overflow:hidden;transition:box-shadow .18s}
+.node:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.node-head{display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.node-label{font-size:13.5px;font-weight:700;flex:1;color:#1a1a1a}
+.tag{font-size:10px;padding:2px 9px;border-radius:10px;background:#f5efe1;color:#666;font-weight:600}
+.chevron{font-size:11px;color:#aaa;transition:transform .2s;flex-shrink:0}
+.node.open .chevron{transform:rotate(90deg)}
+.node-body{display:none;padding:0 15px 14px;border-top:1px solid rgba(0,0,0,.06)}
+.node-body p{font-size:12.5px;color:#555;line-height:1.65;margin-top:12px}
+.ex-box{background:#f5efe1;border-radius:7px;padding:9px 12px;margin-top:10px;font-size:12px;color:#555;line-height:1.6}
+.ex-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1a1a1a;display:block;margin-bottom:3px}
+
+/* VS COMPARISON */
+.vs-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;position:relative}
+@media(max-width:500px){.vs-wrap{grid-template-columns:1fr}}
+.vs-card{background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:10px;padding:14px 15px}
+.vs-card.lin{border-left:3px solid #aaa}
+.vs-card.sys{border-left:3px solid #0d7c8c;background:#f0faf9}
+.vs-card h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.vs-card.lin h4{color:#aaa}
+.vs-card.sys h4{color:#0d7c8c}
+.vs-card ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.vs-card ul li{font-size:12px;color:#444;padding-left:14px;position:relative;line-height:1.5}
+.vs-card ul li::before{content:'→';position:absolute;left:0;color:#ccc;font-size:11px}
+.vs-card.sys ul li::before{color:#0d7c8c}
+.vs-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:32px;height:32px;background:#5B4DA0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;z-index:2;border:2px solid #f8f6f2}
+@media(max-width:500px){.vs-badge{display:none}}
+
+/* ICEBERG */
+.ice-row{border-radius:8px;padding:12px 15px;margin-bottom:8px}
+.ice-label{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.ice-sub{font-size:10px;font-style:italic;margin-top:2px;margin-bottom:5px}
+.ice-desc{font-size:12px;line-height:1.55}
+
+/* FILTER TAGS */
+.filter-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ftag{font-size:11px;padding:4px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.1);color:#555;cursor:pointer;background:#fff;transition:all .15s}
+.ftag:hover,.ftag.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+
+/* LEVER */
+.lever{display:grid;grid-template-columns:36px 1fr;gap:11px;padding:11px 13px;border-radius:10px;border:1px solid rgba(0,0,0,.09);cursor:pointer;background:#fff;margin-bottom:8px;transition:background .14s}
+.lever:hover{background:#f5efe1}
+.lever-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:2px;flex-shrink:0}
+.lever-title{font-size:12.5px;font-weight:700;color:#1a1a1a;margin-bottom:2px}
+.lever-sub{font-size:11.5px;color:#555;line-height:1.45}
+.lever-ex{display:none;font-size:11.5px;color:#555;margin-top:8px;padding:8px 10px;background:#f5efe1;border-radius:6px;line-height:1.55}
+.pbadge{display:inline-block;font-size:9.5px;padding:1px 7px;border-radius:8px;margin-left:6px;font-weight:600;vertical-align:middle}
+.pw{background:#e5e7eb;color:#6b7280}
+.pm{background:#fdf3dc;color:#92400e}
+.ps{background:#d8f0e7;color:#065f46}
+.pd{background:#eae7f7;color:#5b4da0}
+
+/* TOOLS */
+.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.tools-grid{grid-template-columns:1fr}}
+.tool-card{background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:12px;padding:15px;transition:box-shadow .18s}
+.tool-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.tool-icon{font-size:18px;color:#666;margin-bottom:8px;display:block}
+.tool-title{font-size:12.5px;font-weight:700;color:#1a1a1a;margin-bottom:4px}
+.tool-desc{font-size:11.5px;color:#555;line-height:1.6}
+
+/* TRAP */
+.trap{background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.trap-bar{height:5px;background:#FA4616}
+.trap-body{padding:13px 15px}
+.trap-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:5px}
+.trap-desc{font-size:12px;color:#555;line-height:1.6;margin-bottom:9px}
+.trap-shift{font-size:11.5px;color:#1d8a5e;font-style:italic;font-weight:600;padding:7px 10px;background:#d8f0e7;border-radius:6px;line-height:1.5}
+
+/* FOOTER */
+.footer{text-align:center;padding:24px 16px;font-size:11px;color:#aaa;border-top:1px solid rgba(0,0,0,.07);margin-top:10px}
+.footer strong{color:#FA4616}
+
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px}
+.stat-card{background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:10px;padding:14px;text-align:center}
+.stat-num{font-size:28px;font-weight:800;color:#FA4616;line-height:1.1}
+.stat-lbl{font-size:11px;color:#666;margin-top:4px;line-height:1.4}
+
+/* ORANGE CALLOUT */
+.callout{background:#FA4616;color:#fff;border-radius:10px;padding:14px 16px;margin-bottom:14px;font-size:13px;font-weight:500;line-height:1.6}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Piramal Foundation · Adolescent Health Initiative</div>
+  <div class="header-title">Understanding Adolescent Health</div>
+  <div class="header-sub">A systems thinking guide for public health professionals, programme teams, and changemakers working with adolescents in India.</div>
+  <div class="pf-tag">Strategy, Partnerships & New Initiatives · March 2026</div>
+</div>
+
+<div class="tab-bar">
+  <button class="active" onclick="showTab('overview',this)">Overview</button>
+  <button onclick="showTab('why',this)">Why systems thinking?</button>
+  <button onclick="showTab('determinants',this)">Key determinants</button>
+  <button onclick="showTab('loops',this)">Feedback loops</button>
+  <button onclick="showTab('levers',this)">Leverage points</button>
+  <button onclick="showTab('tools',this)">Tools</button>
+  <button onclick="showTab('traps',this)">Common traps</button>
+</div>
+
+<!-- ── TAB 1: OVERVIEW ── -->
+<div id="tab-overview" class="panel active">
+  <div class="panel-title">Adolescent health in India — the big picture</div>
+  <div class="panel-desc">India has 253 million adolescents — the largest in the world. Their health is not just a medical challenge; it is a systems challenge shaped by education, gender, economics, culture, and governance all at once.</div>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">253M</div><div class="stat-lbl">Adolescents in India</div></div>
+    <div class="stat-card"><div class="stat-num">40%</div><div class="stat-lbl">Girls anaemic (15–19 yrs)</div></div>
+    <div class="stat-card"><div class="stat-num">27%</div><div class="stat-lbl">Girls married before 18</div></div>
+    <div class="stat-card"><div class="stat-num">1 in 7</div><div class="stat-lbl">Adolescents face mental health issues</div></div>
+  </div>
+
+  <div class="callout">
+    Adolescent health cannot be solved by a single programme or sector. It is an <strong>emergent outcome</strong> of how nutrition, education, gender norms, economic security, and social support systems interact with each other.
+  </div>
+
+  <div class="section-label">What makes adolescent health a systems problem</div>
+  <div id="overview-nodes"></div>
+</div>
+
+<!-- ── TAB 2: WHY SYSTEMS THINKING ── -->
+<div id="tab-why" class="panel">
+  <div class="panel-title">Why systems thinking — and not just programme logic?</div>
+  <div class="panel-desc">Most public health programmes are designed with linear logic: an input causes an output. But adolescent health doesn't work that way. Understanding the difference is the first step to systems change.</div>
+
+  <div class="vs-wrap">
+    <div class="vs-card lin">
+      <h4>Programme thinking (linear)</h4>
+      <ul>
+        <li>One problem → one solution</li>
+        <li>Cause leads directly to effect</li>
+        <li>Inputs → outputs → outcomes</li>
+        <li>Expert designs, community implements</li>
+        <li>Plan, then execute, then evaluate</li>
+        <li>Success = reaching targets</li>
+        <li>Unintended consequences = failure</li>
+        <li>Scale up the intervention</li>
+      </ul>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="vs-card sys">
+      <h4>Systems thinking (non-linear)</h4>
+      <ul>
+        <li>Many causes → many effects, often delayed</li>
+        <li>Circular causality, feedback loops</li>
+        <li>Structure drives behaviour</li>
+        <li>Stakeholders co-design solutions</li>
+        <li>Plan → act → sense → adapt</li>
+        <li>Success = system capacity to evolve</li>
+        <li>Unintended consequences = data to learn from</li>
+        <li>Scale the CONDITIONS, not the programme</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">The iceberg model — what most programmes miss</div>
+  <div id="iceberg-nodes"></div>
+</div>
+
+<!-- ── TAB 3: DETERMINANTS ── -->
+<div id="tab-determinants" class="panel">
+  <div class="panel-title">Key determinants of adolescent health</div>
+  <div class="panel-desc">Adolescent health outcomes are produced by multiple interacting determinants. Click each to explore how it works and why it matters.</div>
+  <div class="grid-2" id="det-nodes"></div>
+</div>
+
+<!-- ── TAB 4: FEEDBACK LOOPS ── -->
+<div id="tab-loops" class="panel">
+  <div class="panel-title">Feedback loops in adolescent health</div>
+  <div class="panel-desc">The most important patterns in adolescent health are produced by feedback loops — circular chains of cause and effect that either amplify problems or resist solutions.</div>
+
+  <div class="grid-2" id="loop-nodes"></div>
+
+  <div class="section-label">Common loop archetypes — recognise these patterns in your work</div>
+  <div id="archetype-nodes"></div>
+</div>
+
+<!-- ── TAB 5: LEVERAGE POINTS ── -->
+<div id="tab-levers" class="panel">
+  <div class="panel-title">Where to intervene — Meadows' leverage points</div>
+  <div class="panel-desc">Not all interventions are equal. Donella Meadows identified 12 places to intervene in a system, ranked by depth of impact. Most programmes work at the weakest points.</div>
+
+  <div class="filter-row">
+    <span class="ftag active" onclick="filterLevers('all',this)">All</span>
+    <span class="ftag" onclick="filterLevers('weak',this)">Weak</span>
+    <span class="ftag" onclick="filterLevers('medium',this)">Medium</span>
+    <span class="ftag" onclick="filterLevers('strong',this)">Strong</span>
+    <span class="ftag" onclick="filterLevers('deep',this)">Deepest</span>
+  </div>
+  <div id="lever-list"></div>
+</div>
+
+<!-- ── TAB 6: TOOLS ── -->
+<div id="tab-tools" class="panel">
+  <div class="panel-title">Tools for systems thinking in practice</div>
+  <div class="panel-desc">Systems thinking is not just conceptual — it has participatory tools your team can use right now to map, understand, and act on the systems around adolescent health.</div>
+  <div class="tools-grid" id="tools-grid"></div>
+</div>
+
+<!-- ── TAB 7: TRAPS ── -->
+<div id="tab-traps" class="panel">
+  <div class="panel-title">Common traps in programme-oriented thinking</div>
+  <div class="panel-desc">Recognising these traps is the first step to shifting your team's mindset from programme implementation to systems change.</div>
+  <div class="grid-2" id="trap-nodes"></div>
+</div>
+
+<div class="footer">
+  <strong>Piramal Foundation</strong> · Strategy, Partnerships & New Initiatives<br>
+  Sources: NFHS-5 · UNICEF India · WHO · Donella Meadows, <em>Thinking in Systems</em> · PMC / Oxford Academic<br>
+  Built for the Adolescent Health Systems Change Initiative · March 2026
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────
+
+const overviewNodes = [
+  {c:"#0D7C8C", l:"It is an emergent outcome", t:"Systems property",
+   d:"Nutrition, mental wellbeing, and reproductive health co-produce each other. A girl's nutritional status affects cognition → school engagement → early marriage risk. No single programme addresses these connections.",
+   ex:"Girls who stay in school are 6x less likely to marry early — but school retention depends on safety, nutrition, family economics, and gender norms simultaneously."},
+  {c:"#5B4DA0", l:"Gender norms are the deepest driver", t:"Root cause",
+   d:"Patriarchal norms shape what services are acceptable, who can access them, and what 'health' even means for girls and boys differently. This operates at the deepest level — the paradigm level.",
+   ex:"A girl may know about contraception but cannot access it because family and community norms override her individual knowledge and decision-making."},
+  {c:"#D4644A", l:"Multiple feedback loops interact", t:"Complexity",
+   d:"Education ↔ nutrition ↔ agency ↔ gender norms ↔ economic conditions all feed back on each other simultaneously. You cannot change one without it rippling through all others.",
+   ex:"Reinforcing loop: educated girls delay marriage → gain agency → invest in children's health → next generation enters school healthier → loop continues."},
+  {c:"#E09B2D", l:"Adolescents are agents, not targets", t:"Key reframe",
+   d:"Young people respond to, resist, and reshape the health system. They are not receptacles for services — they are nodes in the system with their own strategies, peer networks, and information environments.",
+   ex:"Adolescent girls in Jharkhand self-organised to resist forced marriages using mobile phones and peer networks — without any programme design."}
+];
+
+const icebergLevels = [
+  {bg:"#EEEEEE", lc:"#888", tc:"#555",
+   l:"EVENTS", s:"What we see & react to",
+   d:"Cases, incidents, data points. Anaemia rate increased. Dropout spiked. Teen pregnancy reported. Most programmes respond here — treating the symptom, not the cause."},
+  {bg:"#FDE9E3", lc:"#FA4616", tc:"#555",
+   l:"PATTERNS & TRENDS", s:"Recurring over time",
+   d:"Girls consistently drop out at class 9 every year. Malnutrition peaks in the same districts. Seeing patterns lets us anticipate and prevent rather than react."},
+  {bg:"#FBD0C3", lc:"#FA4616", tc:"#444",
+   l:"SYSTEM STRUCTURE", s:"Rules, relationships, incentives",
+   d:"Policy design, power dynamics, resource flows, institutional incentives. This is where high-leverage interventions live — but most programmes never reach this level."},
+  {bg:"#FA4616", lc:"white", tc:"white",
+   l:"MENTAL MODELS", s:"Shared beliefs that created the structure",
+   d:"The beliefs and values that shape everything above — 'girls should marry early', 'health is a personal responsibility', 'communities can't design their own solutions'. The deepest and most transformative work."}
+];
+
+const determinants = [
+  {c:"#0D7C8C", l:"Nutrition & food security", t:"Biological",
+   d:"Undernutrition in adolescence affects brain development, immune function, reproductive health, and future earning capacity. 40% of adolescent girls in India are anaemic.",
+   ex:"In tribal communities, seasonal food insecurity creates recurring nutritional deficits that no supplementation camp can sustainably address without addressing food systems."},
+  {c:"#5B4DA0", l:"Education & school environment", t:"Social",
+   d:"School retention — especially for girls — is the single strongest predictor of delayed marriage, lower fertility, and better health outcomes across the lifecycle.",
+   ex:"Safe toilets, menstrual hygiene support, and female teachers are system-level conditions that determine whether girls stay in school — not individual motivation."},
+  {c:"#D4644A", l:"Gender norms & power", t:"Structural",
+   d:"Gender norms determine who gets food first, who can access health services, who decides about marriage, and who controls economic resources. They operate invisibly but powerfully.",
+   ex:"In communities where girls' mobility is restricted, even excellent health services remain inaccessible — not a supply problem but a structural power problem."},
+  {c:"#E09B2D", l:"Mental health & wellbeing", t:"Psychological",
+   d:"1 in 7 adolescents globally faces a mental health condition. In India, academic pressure, family stress, gender violence, and social isolation are major drivers — rarely addressed by health programmes.",
+   ex:"Adolescent girls in tribal communities face compounding stressors: migration of fathers, poverty, early marriage pressure, and lack of peer support — all interacting."},
+  {c:"#1D8A5E", l:"Economic security & livelihoods", t:"Economic",
+   d:"Household poverty drives early marriage (reducing 'burden'), child labour, poor diet, and inability to access health services. Economic interventions have large, long-lasting health effects.",
+   ex:"Conditional cash transfer programmes that keep girls in school have more impact on adolescent health than targeted health interventions alone."},
+  {c:"#378ADD", l:"Health services & access", t:"Service",
+   d:"Availability of adolescent-friendly health services is necessary but not sufficient. Services must be acceptable, affordable, and reachable — which depends on all other determinants.",
+   ex:"A health centre 2km away is inaccessible to a girl whose family won't allow her to travel unaccompanied. Access is not just physical — it is social."}
+];
+
+const loopNodes = [
+  {c:"#D4644A", l:"Reinforcing loop (R) — vicious cycle", t:"Amplifies",
+   d:"A positive feedback loop that amplifies change in the same direction — producing either virtuous cycles (good) or vicious cycles (bad).",
+   ex:"Poor nutrition → poor cognition → poor school results → dropout → early marriage → pregnancy → poor nutrition in next generation. A vicious cycle spanning generations."},
+  {c:"#1D8A5E", l:"Balancing loop (B) — system resistance", t:"Stabilises",
+   d:"Seeks equilibrium and resists change. These loops are why systems return to the same state even after intervention — the immune system of the status quo.",
+   ex:"CHW increases awareness of family planning → families resist → community gatekeepers apply pressure → CHW backs off → awareness drops back. The system protects its equilibrium."}
+];
+
+const archetypes = [
+  {c:"#5B4DA0", l:"Fixes that fail",
+   d:"Quick fix solves the symptom but creates a side-effect that worsens the original problem over time.",
+   ex:"Supplementation camps for anaemia without addressing food systems or gender dynamics → anaemia returns next season, and dependency on external camps grows."},
+  {c:"#D4644A", l:"Shifting the burden",
+   d:"Symptomatic solution diverts attention and resources from the fundamental solution.",
+   ex:"Individual counselling for adolescent depression instead of addressing social isolation, academic pressure, and gender violence driving it."},
+  {c:"#E09B2D", l:"Limits to growth",
+   d:"A growth loop eventually hits a balancing constraint. Pushing harder on the accelerator doesn't help — find and address the constraint.",
+   ex:"More outreach workers plateau when the real constraint is absent services to refer to and family resistance to girls accessing them."},
+  {c:"#0D7C8C", l:"Tragedy of the commons",
+   d:"Individuals rationally use a shared resource, collectively depleting it.",
+   ex:"Multiple programmes competing for the same community trust and attention — each individually rational, collectively eroding community engagement."}
+];
+
+const levers = [
+  {n:"12–9", t:"Numbers, buffers & delays", pw:"weak", c:"#888",
+   s:"Changing constants — budgets, targets, service standards",
+   ex:"Increasing ASHA budget, raising child marriage age to 18, changing immunisation spacing. Important to individuals but rarely transform system behaviour."},
+  {n:"8–5", t:"Information flows & rules", pw:"medium", c:"#E09B2D",
+   s:"Where data reaches — and who acts on it",
+   ex:"Making district-level adolescent health data visible to communities — not just government. When villages see their own malnutrition rates, new accountability emerges."},
+  {n:"4–3", t:"Self-organisation & goals", pw:"strong", c:"#1D8A5E",
+   s:"The power to change system structure",
+   ex:"Enabling adolescent girls to form peer groups that identify, design, and advocate for solutions. Shifting the system's goal from service delivery targets to adolescent thriving."},
+  {n:"2–1", t:"Mindsets & transcendence", pw:"deep", c:"#FA4616",
+   s:"The shared beliefs that created the system",
+   ex:"Shifting from 'adolescents are health programme beneficiaries' to 'adolescents are agents co-designing solutions'. This is the deepest systems change work."}
+];
+
+const tools = [
+  {i:"◎", t:"Causal loop diagrams", d:"Maps feedback loops visually. Makes circular causality visible. Best done participatorily — community members and stakeholders co-draw the system map together."},
+  {i:"⊙", t:"Group model building", d:"Structured workshops where diverse stakeholders co-create a shared system model. Builds ownership and surfaces hidden assumptions about what's really driving the problem."},
+  {i:"△", t:"The iceberg model", d:"Facilitation tool to move teams from visible events to underlying patterns, structures, and mental models. Powerful for shifting programme teams to systems thinking."},
+  {i:"◈", t:"Actor mapping", d:"Maps who holds power, information, and relationships in the system. Reveals who is missing from decisions and where coalition-building can shift structure."},
+  {i:"◐", t:"Participatory systems mapping", d:"Community members and adolescents draw their own map of the system. Centres lived experience as valid system knowledge — essential for equity-oriented work."},
+  {i:"◉", t:"Rapid learning cycles", d:"Plan → act → sense → adapt, iterated quickly. Treats each intervention as a probe to learn from rather than a programme to evaluate against fixed targets."},
+  {i:"◆", t:"Wicked problem framing", d:"Surfaces multiple legitimate perspectives on the problem — especially when adolescents, parents, health workers, and government have conflicting definitions of the problem."},
+  {i:"⬡", t:"Scenario planning", d:"Explores how the system might behave under different futures. Helps teams prepare adaptive strategies rather than fixed blueprints."}
+];
+
+const traps = [
+  {t:"The awareness trap",
+   d:"Assuming knowledge causes behaviour change. Adolescents may know everything about nutrition, contraception, or early marriage and still be unable to act — because the constraints are structural.",
+   s:"Shift: address the structures preventing action, not just awareness"},
+  {t:"The scale-up fallacy",
+   d:"A pilot works in one context; assuming it will work everywhere if 'scaled'. Systems are locally adapted — scaling the intervention without scaling the conditions fails.",
+   s:"Shift: scale the enabling conditions, not the programme itself"},
+  {t:"Symptoms not structure",
+   d:"Treating visible outcomes (anaemia, dropout, pregnancy) without addressing the upstream structural drivers (food systems, gender power, economic security) that keep producing them.",
+   s:"Shift: use the iceberg to identify and act on deeper structure"},
+  {t:"Single-sector solutions",
+   d:"Health programmes that don't engage education, economic, and social systems. Adolescent health is cross-sector — partial interventions create partial, fragile effects.",
+   s:"Shift: map actors across sectors and build cross-sector coalitions"},
+  {t:"The beneficiary mindset",
+   d:"Designing for adolescents rather than with them. Adolescents are adaptive agents who will respond to, resist, or reshape any programme — involving them is leverage, not just ethics.",
+   s:"Shift: co-design with adolescents, especially girls from marginalised communities"},
+  {t:"Measuring what's easy",
+   d:"Tracking outputs (sessions held, kits distributed) rather than outcomes (agency, nutrition, safety). Optimising for easy metrics drives the system away from what actually matters.",
+   s:"Shift: track intermediate outcomes that reflect real system change, not just activities"}
+];
+
+// ── RENDER ────────────────────────────────────────────────
+
+function makeNode(obj) {
+  const d = document.createElement('div');
+  d.className = 'node';
+  d.innerHTML = `
+    <div class="node-head" onclick="this.parentElement.classList.toggle('open');this.parentElement.querySelector('.node-body').style.display=this.parentElement.classList.contains('open')?'block':'none';this.querySelector('.chevron').style.transform=this.parentElement.classList.contains('open')?'rotate(90deg)':'rotate(0deg)'">
+      <div class="dot" style="background:${obj.c}"></div>
+      <div class="node-label">${obj.l}</div>
+      ${obj.t ? `<div class="tag">${obj.t}</div>` : ''}
+      <span class="chevron">▶</span>
+    </div>
+    <div class="node-body" style="display:none">
+      <p>${obj.d}</p>
+      ${obj.ex ? `<div class="ex-box"><span class="ex-lbl">In practice</span>${obj.ex}</div>` : ''}
+    </div>`;
+  return d;
+}
+
+function renderList(id, data) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  data.forEach(item => el.appendChild(makeNode(item)));
+}
+
+function renderGrid(id, data) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  data.forEach(item => el.appendChild(makeNode(item)));
+}
+
+function renderIceberg() {
+  const el = document.getElementById('iceberg-nodes');
+  if (!el) return;
+  el.innerHTML = '';
+  icebergLevels.forEach(l => {
+    const d = document.createElement('div');
+    d.className = 'ice-row';
+    d.style.background = l.bg;
+    d.innerHTML = `
+      <div class="ice-label" style="color:${l.lc}">${l.l}</div>
+      <div class="ice-sub" style="color:${l.lc}">${l.s}</div>
+      <div class="ice-desc" style="color:${l.tc}">${l.d}</div>`;
+    el.appendChild(d);
+  });
+}
+
+function renderLevers() {
+  const el = document.getElementById('lever-list');
+  if (!el) return;
+  el.innerHTML = '';
+  const badgeMap = {weak:['pw','Low leverage'],medium:['pm','Medium'],strong:['ps','High'],deep:['pd','Deepest']};
+  levers.forEach(l => {
+    const [bc, bl] = badgeMap[l.pw];
+    const d = document.createElement('div');
+    d.className = 'lever';
+    d.dataset.power = l.pw;
+    d.innerHTML = `
+      <div class="lever-num" style="background:${l.c}22;color:${l.c}">${l.n}</div>
+      <div>
+        <div class="lever-title">${l.t}<span class="pbadge ${bc}">${bl}</span></div>
+        <div class="lever-sub">${l.s}</div>
+        <div class="lever-ex"><strong>In adolescent health: </strong>${l.ex}</div>
+      </div>`;
+    d.onclick = () => {
+      const ex = d.querySelector('.lever-ex');
+      ex.style.display = ex.style.display === 'block' ? 'none' : 'block';
+    };
+    el.appendChild(d);
+  });
+}
+
+function renderTools() {
+  const el = document.getElementById('tools-grid');
+  if (!el) return;
+  el.innerHTML = '';
+  tools.forEach(t => {
+    const d = document.createElement('div');
+    d.className = 'tool-card';
+    d.innerHTML = `<span class="tool-icon">${t.i}</span><div class="tool-title">${t.t}</div><div class="tool-desc">${t.d}</div>`;
+    el.appendChild(d);
+  });
+}
+
+function renderTraps() {
+  const el = document.getElementById('trap-nodes');
+  if (!el) return;
+  el.innerHTML = '';
+  traps.forEach(t => {
+    const d = document.createElement('div');
+    d.className = 'trap';
+    d.innerHTML = `<div class="trap-bar"></div><div class="trap-body"><div class="trap-title">${t.t}</div><div class="trap-desc">${t.d}</div><div class="trap-shift">${t.s}</div></div>`;
+    el.appendChild(d);
+  });
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  btn.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+}
+
+function filterLevers(power, btn) {
+  document.querySelectorAll('.ftag').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.lever').forEach(l => {
+    l.style.display = (power === 'all' || l.dataset.power === power) ? 'grid' : 'none';
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────────
+renderList('overview-nodes', overviewNodes);
+renderIceberg();
+renderGrid('det-nodes', determinants);
+renderGrid('loop-nodes', loopNodes);
+renderList('archetype-nodes', archetypes);
+renderLevers();
+renderTools();
+renderTraps();
+</script>
+</body>
+</html>
